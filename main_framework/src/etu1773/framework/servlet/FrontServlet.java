@@ -1,8 +1,11 @@
+package etu1773.framework.servlet;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.*;
 
 public class FrontServlet extends HttpServlet {
+
+    public HashMap<String,Mapping> MappingUrls;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
