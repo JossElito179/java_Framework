@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 public class FrontServlet extends HttpServlet {
 
     public HashMap<String,Mapping> MappingUrls;
