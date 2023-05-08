@@ -4,6 +4,10 @@ public class Mapping {
     public String className;
     public String method;
     
+    public Mapping(String className, String method) {
+        this.className = className;
+        this.method = method;
+    }
     public String getClassName() {
         return className;
     }
