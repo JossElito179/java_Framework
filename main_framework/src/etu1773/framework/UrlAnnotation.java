@@ -1,3 +1,4 @@
+package etu1773.framework;
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)

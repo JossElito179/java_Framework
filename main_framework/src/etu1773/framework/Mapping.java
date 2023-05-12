@@ -1,9 +1,15 @@
 package etu1773.framework;
 
 public class Mapping {
+
+
     public String className;
     public String method;
     
+    public Mapping() {
+        System.out.println("Hello");
+    }
+
     public Mapping(String className, String method) {
         this.className = className;
         this.method = method;
