@@ -1,10 +1,11 @@
+package etu1773.framework;
 import java.util.*;
 import java.io.File;
 import java.lang.reflect.*;
-import etu1773.framework.*;
 
 public class Utilitaire {
     
+    public Utilitaire(){}
 
     public ArrayList<Class> findClassesInPackage(String path, String packageName) throws Exception {
         
