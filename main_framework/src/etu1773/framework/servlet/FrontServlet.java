@@ -6,6 +6,7 @@ package etu1773.framework.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import java.util.Hashtable;
 import java.util.Map.Entry;
 
 import javax.print.attribute.standard.OutputDeviceAssigned;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -60,6 +62,33 @@ public class FrontServlet extends HttpServlet {
     }
 
     
+    protected String giveView(HttpServletRequest req){
+        String slug =req.getPathInfo();
+        Object obj=null;
+        ModelView mv =new ModelView();
+            if(slug!=null){
+                for(Entry<String, Mapping> entry : this.getMappingUrls().entrySet() ){
+                    if(entry.getKey()==slug){
+                        String className=entry.getValue().getClassName();
+                        mv.view=className;
+                        try {
+                            Class<?> clazz = Class.forName(className);
+                            try {
+                                obj = clazz.getDeclaredConstructor().newInstance();
+                            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                                    | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+                        } catch (ClassNotFoundException e) {
+                            // Gérer l'exception en cas de classe introuvable
+                        }
+                    }
+                }
+            }
+        return mv.view;
+    }
+
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -76,6 +105,9 @@ public class FrontServlet extends HttpServlet {
             out.println("<body>");
             // out.println("<h1>Servlet FrontServlet at " + ut.getUrl(request) + "</h1>");
             init();
+            String classview=giveView(request);
+            RequestDispatcher dispatch =request.getRequestDispatcher(classview+".jsp");
+            dispatch.forward(request,response);
             out.println("</body>");
             out.println("</html>");
         }
