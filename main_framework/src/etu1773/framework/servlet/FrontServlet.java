@@ -47,8 +47,8 @@ public class FrontServlet extends HttpServlet {
     }
 
     public void init() {
-        String path="C:/Users/LENOVO/projets/java_Framework/main_framework";
-        String packageName="src";
+        String path="E:/.ITU/MrNaina/java_Framework/test_framework/WEB_INF";
+        String packageName="classes";
         Utilitaire u =new Utilitaire();
         ArrayList<Class> allclasses;
         try {
@@ -61,20 +61,39 @@ public class FrontServlet extends HttpServlet {
         
     }
 
-    
-    protected String giveView(HttpServletRequest req){
+    /*
+     * addItem dans Emp
+     * prendre view de mv
+     * boucler hashMap
+     * setAttribut(Data)
+     * 
+     * anaty vue mandefa donné mankany amin'ny controller 
+     * 
+     */
+//FileUpload 
+//String Name
+//String path
+//tableau de byts[]
+//Client String name 
+//       FileUpload badge
+//       <input type=file name='badge' />
+    protected ModelView giveView(HttpServletRequest req){
         String slug =req.getPathInfo();
         Object obj=null;
+        Object resultat =null;
         ModelView mv =new ModelView();
             if(slug!=null){
                 for(Entry<String, Mapping> entry : this.getMappingUrls().entrySet() ){
                     if(entry.getKey()==slug){
                         String className=entry.getValue().getClassName();
-                        mv.view=className;
+                        String method=entry.getValue().getMethod();
                         try {
                             Class<?> clazz = Class.forName(className);
                             try {
                                 obj = clazz.getDeclaredConstructor().newInstance();
+                                Method methode = obj.getClass().getMethod(method, null);
+                                methode.setAccessible(true);
+                                resultat = methode.invoke(obj, null);
                             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                                     | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                                 // TODO Auto-generated catch block
@@ -86,7 +105,7 @@ public class FrontServlet extends HttpServlet {
                     }
                 }
             }
-        return mv.view;
+        return ((ModelView)resultat);
     }
 
 
@@ -105,8 +124,10 @@ public class FrontServlet extends HttpServlet {
             out.println("<body>");
             // out.println("<h1>Servlet FrontServlet at " + ut.getUrl(request) + "</h1>");
             init();
-            String classview=giveView(request);
-            RequestDispatcher dispatch =request.getRequestDispatcher(classview+".jsp");
+            ModelView classview=giveView(request);
+            classview.data.put("test", "potatoes");
+            request.setAttribut("test","potatoes");
+            RequestDispatcher dispatch =request.getRequestDispatcher(classview.view);
             dispatch.forward(request,response);
             out.println("</body>");
             out.println("</html>");

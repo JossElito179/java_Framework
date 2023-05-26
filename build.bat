@@ -1,3 +1,19 @@
-@REM jar cf java_framework.jar C:\Users\LENOVO\projets\java_Framework\main_framework\bin
-@REM jar -cvf test_framework.war C:\Users\LENOVO\projets\java_Framework\test_framework
-xcopy "C:\Users\LENOVO\projets\java_Framework\test_framework.war"  "C:\Program Files\apache-tomcat-9.0.73\webapps" /E /I
+jar cf java_framework.jar main_framework\bin
+move "java_framework.jar" "testFramework\lib"
+
+
+mkdir testing_framework\WEB-INF 
+mkdir testing_framework\WEB-INF\classes 
+mkdir testing_framework\WEB-INF\lib  
+
+xcopy "testFramework\bin\*.class" "testing_framework\WEB-INF\classes"
+xcopy "testFramework\lib\java_framework.jar" "testing_framework\WEB-INF\lib"
+
+xcopy "main_framework\web.xml" "testing_framework\WEB-INF"
+xcopy "testFramework\index.jsp" "testing_framework"
+
+jar -cvf frameworkTest.war testing_framework
+
+xcopy "frameworkTest.war" "C:\Program Files\Apache Software Foundation\Tomcat 9.0_Tomcat90\webapps"
+
+rmdir testing_framework

@@ -1,5 +1,3 @@
-import etu1773.framework.UrlAnnotation;
-
 public class Emp{
     private int id ;
     private String nom;
